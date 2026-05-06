@@ -1,0 +1,64 @@
+id: f004
+name: "Quality Inspection Flow"
+source_id: quality-inspection-flow
+stage: done
+status: done
+summary: |
+  JC-driven inspection flow. Job Card button creates QI silently (ERPNext
+  constraint via qi_bridge), then creates the selected inspection report DocType
+  via report_factory and redirects to it. On report submit,
+  inspection_report_common.js redirects back to Job Card (or QI if not JC-driven).
+  7 custom report DocTypes + 8 child tables. QI form auto-saves on inspection_form
+  field change.
+
+  Originally shipped under app erpcloud_itagqatar (module ERPCloud ITAG Qatar).
+  Transferred to dedicated app quality_itagqatar (module Quality ITAG Qatar)
+  on 2026-05-05. Import paths now use quality_itagqatar.quality_itag_qatar.*;
+  DocType + Custom Field module attribution flipped via
+  quality_itagqatar.patches.v1_0.reattribute_quality_module.
+components:
+  - id: f004-c001
+    name: "API — start_jc_inspection"
+    type: api
+    path: quality_itag_qatar/api/job_card.py
+    stage: done
+  - id: f004-c002
+    name: "Inspection dispatcher"
+    type: service
+    path: quality_itag_qatar/inspection/dispatcher.py
+    stage: done
+  - id: f004-c003
+    name: "QI bridge"
+    type: service
+    path: quality_itag_qatar/inspection/qi_bridge.py
+    stage: done
+  - id: f004-c004
+    name: "Report factory"
+    type: service
+    path: quality_itag_qatar/inspection/report_factory.py
+    stage: done
+  - id: f004-c005
+    name: "Per-form hook runner"
+    type: service
+    path: quality_itag_qatar/inspection/hooks/__init__.py
+    stage: done
+  - id: f004-c006
+    name: "Job Card JS — Start Inspection button"
+    type: client_script
+    path: public/js/job_card.js
+    stage: done
+  - id: f004-c007
+    name: "Quality Inspection JS — auto-save on form pick"
+    type: client_script
+    path: public/js/quality_inspection.js
+    stage: done
+  - id: f004-c008
+    name: "Inspection report common JS — on_submit redirect"
+    type: client_script
+    path: public/js/inspection_report_common.js
+    stage: done
+  - id: f004-c009
+    name: "7 report DocTypes + 8 child DocTypes"
+    type: doctype
+    path: quality_itag_qatar/doctype/
+    stage: done

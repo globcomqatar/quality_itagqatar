@@ -1,0 +1,5 @@
+features:
+  - id: f004
+    name: "Quality Inspection Flow"
+    slug: quality-inspection-flow
+    stage: done

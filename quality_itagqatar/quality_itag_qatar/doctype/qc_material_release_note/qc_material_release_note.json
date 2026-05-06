@@ -1,0 +1,131 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-01-19 20:26:55.877889",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "quality_inspection",
+  "naming_series",
+  "job_card",
+  "customer",
+  "customer_name",
+  "column_break_rozn",
+  "grn_no",
+  "customer_ref",
+  "remarks",
+  "section_break_ewtp",
+  "details",
+  "section_break_whlc",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_whlc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "QC Material Release Note",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "quality_inspection",
+   "fieldtype": "Link",
+   "label": "Quality Inspection",
+   "options": "Quality Inspection"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "QMR-.MM.-.YYYY.-.####."
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name"
+  },
+  {
+   "fieldname": "column_break_rozn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "grn_no",
+   "fieldtype": "Data",
+   "label": "GRN No"
+  },
+  {
+   "fieldname": "customer_ref",
+   "fieldtype": "Data",
+   "label": "Customer Ref"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "section_break_ewtp",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "details",
+   "fieldtype": "Table",
+   "label": "Details",
+   "options": "QC Material Release Note Details"
+  },
+  {
+   "fieldname": "job_card",
+   "fieldtype": "Link",
+   "label": "Job Card",
+   "options": "Job Card",
+   "read_only": 1,
+   "in_list_view": 0,
+   "print_hide": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-01-19 21:01:02.420317",
+ "modified_by": "Administrator",
+ "module": "Quality ITAG Qatar",
+ "name": "QC Material Release Note",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

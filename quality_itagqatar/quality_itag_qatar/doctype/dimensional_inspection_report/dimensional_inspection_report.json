@@ -1,0 +1,197 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-01-17 13:00:22.103575",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "customer_details_section",
+  "customer",
+  "customer_name",
+  "column_break_xrps",
+  "customer_ref",
+  "grn_no",
+  "section_break_yqqq",
+  "quality_inspection",
+  "job_card",
+  "reference_document",
+  "sketch",
+  "naming_series",
+  "column_break_xvjn",
+  "drawing_number",
+  "part_number",
+  "serial_no",
+  "manufacturer",
+  "procedure_ref",
+  "part_description",
+  "section_break_tsmk",
+  "report_details",
+  "section_break_cqut",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_cqut",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Dimensional Inspection Report",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "quality_inspection",
+   "fieldtype": "Link",
+   "label": "Quality Inspection",
+   "options": "Quality Inspection"
+  },
+  {
+   "fetch_from": "quality_inspection.reference_name",
+   "fieldname": "reference_document",
+   "fieldtype": "Data",
+   "label": "Reference Document",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_xvjn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "part_description",
+   "fieldtype": "Small Text",
+   "label": "Part Description"
+  },
+  {
+   "fetch_from": "quality_inspection.custom_drawing_no",
+   "fieldname": "drawing_number",
+   "fieldtype": "Data",
+   "label": "Drawing Number"
+  },
+  {
+   "fieldname": "part_number",
+   "fieldtype": "Data",
+   "label": "Part Number"
+  },
+  {
+   "fetch_from": "quality_inspection.item_serial_no",
+   "fieldname": "serial_no",
+   "fieldtype": "Data",
+   "label": "Serial No"
+  },
+  {
+   "fieldname": "customer_details_section",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "Customer Details"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_xrps",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "customer_ref",
+   "fieldtype": "Data",
+   "label": "Customer Ref"
+  },
+  {
+   "fieldname": "section_break_yqqq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "manufacturer",
+   "fieldtype": "Data",
+   "label": "Manufacturer"
+  },
+  {
+   "fieldname": "procedure_ref",
+   "fieldtype": "Data",
+   "label": "Procedure Ref"
+  },
+  {
+   "fieldname": "grn_no",
+   "fieldtype": "Data",
+   "label": "GRN No"
+  },
+  {
+   "fieldname": "section_break_tsmk",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "report_details",
+   "fieldtype": "Table",
+   "label": "Report Details",
+   "options": "Dimensional Inspection Details"
+  },
+  {
+   "fieldname": "sketch",
+   "fieldtype": "Data",
+   "label": "Sketch",
+   "read_only": 1
+  },
+  {
+   "default": "DIR-.MM.-.YYYY.-.####.",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "DIR-.MM.-.YYYY.-.####."
+  },
+  {
+   "fieldname": "job_card",
+   "fieldtype": "Link",
+   "label": "Job Card",
+   "options": "Job Card",
+   "read_only": 1,
+   "in_list_view": 0,
+   "print_hide": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-01-19 12:13:33.065434",
+ "modified_by": "Administrator",
+ "module": "Quality ITAG Qatar",
+ "name": "Dimensional Inspection Report",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

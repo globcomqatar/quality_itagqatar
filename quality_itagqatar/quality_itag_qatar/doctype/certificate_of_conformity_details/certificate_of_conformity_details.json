@@ -1,0 +1,72 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-01-19 20:11:34.909790",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "po_line_item_no",
+  "description",
+  "section_break_jvmm",
+  "qty",
+  "column_break_ixas",
+  "part_number",
+  "serial_no"
+ ],
+ "fields": [
+  {
+   "fieldname": "po_line_item_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "PO Line item No"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "in_list_view": 1,
+   "label": "Description"
+  },
+  {
+   "fieldname": "section_break_jvmm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Qty"
+  },
+  {
+   "fieldname": "column_break_ixas",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "part_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Part Number"
+  },
+  {
+   "fieldname": "serial_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Serial No"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-01-19 20:13:24.524598",
+ "modified_by": "Administrator",
+ "module": "Quality ITAG Qatar",
+ "name": "Certificate of Conformity Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
