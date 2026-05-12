@@ -16,6 +16,24 @@ fixtures = [
         "dt": "Property Setter",
         "filters": [["module", "=", "Quality ITAG Qatar"]],
     },
+    {
+        "dt": "Quality Field Mapping",
+        "filters": [
+            [
+                "target_doctype",
+                "in",
+                [
+                    "Assembly Traceability Record",
+                    "Certificate of Conformity",
+                    "Contract Review Record",
+                    "Dimensional Inspection Report",
+                    "Final Machining Visual Examination Report",
+                    "QC Material Release Note",
+                    "Visual Examination Report",
+                ],
+            ]
+        ],
+    },
 ]
 
 doctype_js = {

@@ -3,8 +3,6 @@
 
 from frappe.model.document import Document
 
-from quality_itagqatar.quality_itag_qatar.inspection.prefill_mixin import PrefillMixin
 
-
-class AssemblyTraceabilityRecord(PrefillMixin, Document):
+class QualityFieldMappingRule(Document):
 	pass

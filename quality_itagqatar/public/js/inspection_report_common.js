@@ -10,6 +10,30 @@ const INSPECTION_REPORT_DOCTYPES = [
 
 INSPECTION_REPORT_DOCTYPES.forEach(function (doctype) {
 	frappe.ui.form.on(doctype, {
+		refresh(frm) {
+			if (frm.is_new() || frm.doc.docstatus !== 0) return;
+			frm.add_custom_button(
+				__('Refresh from Source'),
+				function () {
+					frappe.call({
+						method: 'quality_itagqatar.quality_itag_qatar.inspection.prefill.refresh_from_source',
+						args: { doctype: frm.doc.doctype, name: frm.doc.name },
+						freeze: true,
+						freeze_message: __('Refreshing from Job Card chain…'),
+					}).then(function (r) {
+						const count = Object.keys((r.message && r.message.filled) || {}).length;
+						frappe.show_alert({
+							message: count
+								? __('Filled {0} field(s) from source', [count])
+								: __('Nothing to fill — clear a field first to force a refresh'),
+							indicator: count ? 'green' : 'blue',
+						});
+						frm.reload_doc();
+					});
+				},
+				__('Actions')
+			);
+		},
 		on_submit(frm) {
 			if (!frm.doc.quality_inspection) return;
 
