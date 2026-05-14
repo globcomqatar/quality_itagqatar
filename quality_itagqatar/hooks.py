@@ -36,8 +36,18 @@ fixtures = [
     },
 ]
 
+doc_events = {
+    "Quality Inspection": {
+        "on_submit": "quality_itagqatar.quality_itag_qatar.quality_inspection.auto_submit.on_submit",
+    },
+    "Stock Entry": {
+        "validate": "quality_itagqatar.quality_itag_qatar.stock_entry.validators.validate_inward_inspection_required",
+    },
+}
+
 doctype_js = {
     "Job Card": "public/js/job_card.js",
+    "Stock Entry": "public/js/stock_entry.js",
     "Quality Inspection": "public/js/quality_inspection.js",
     "Assembly Traceability Record": "public/js/inspection_report_common.js",
     "Certificate of Conformity": "public/js/inspection_report_common.js",

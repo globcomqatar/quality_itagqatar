@@ -5,9 +5,9 @@
 Config-driven prefill engine for Quality Report DocTypes.
 
 Mapping rules live in `Quality Field Mapping` (one record per target DocType).
-Each rule declares a dot-walked path from the anchor Job Card to the source
-value. Multiple rules per target field are tried in priority order; first
-non-empty wins. Targets that are already filled are never overwritten.
+Each rule declares a source DocType and a dot-walked path from that anchor to
+the source value. Multiple rules per target field are tried in priority order;
+first non-empty wins. Targets that are already filled are never overwritten.
 
 Engine entry points:
 - prefill_target(target_doc, trigger)  → invoked from PrefillMixin.before_insert
@@ -20,6 +20,7 @@ from frappe import _
 MAX_PATH_DEPTH = 10
 TRIGGER_INSERT = "Insert"
 TRIGGER_MANUAL = "Manual Refresh"
+DEFAULT_SOURCE_DOCTYPE = "Job Card"
 
 
 def prefill_target(target_doc, trigger=TRIGGER_INSERT):
@@ -30,13 +31,11 @@ def prefill_target(target_doc, trigger=TRIGGER_INSERT):
 	precondition failed. Never raises — failures are logged.
 	"""
 	try:
-		anchor = _load_anchor_job_card(target_doc)
-		if not anchor:
-			return {}
 		mapping = _load_mapping(target_doc.doctype)
 		if not mapping or not mapping.active:
 			return {}
 		target_meta = frappe.get_meta(target_doc.doctype)
+		anchors_cache: dict[str, object | None] = {}
 		filled = {}
 		for tgt_field, rules in _group_active_rules_by_target(mapping.rules).items():
 			tgt_field_meta = target_meta.get_field(tgt_field)
@@ -45,6 +44,12 @@ def prefill_target(target_doc, trigger=TRIGGER_INSERT):
 			if _is_filled(target_doc.get(tgt_field)):
 				continue
 			for rule in sorted(rules, key=lambda r: r.priority):
+				source_doctype = rule.source_doctype or DEFAULT_SOURCE_DOCTYPE
+				if source_doctype not in anchors_cache:
+					anchors_cache[source_doctype] = _load_anchor(target_doc, source_doctype)
+				anchor = anchors_cache[source_doctype]
+				if not anchor:
+					continue
 				value, src_dt, src_name = resolve_path(anchor, rule.source_path)
 				if not _is_filled(value):
 					continue
@@ -108,35 +113,43 @@ def refresh_from_source(doctype, name):
 	return {"filled": filled}
 
 
-def _load_anchor_job_card(target_doc):
-	"""Resolve the target's Link → Job Card field and load that JC.
+def _load_anchor(target_doc, source_doctype):
+	"""Resolve the target's Link → source_doctype field and load that anchor.
 
 	Asserts exactly one such field. Returns None if zero, more than one,
-	or the field is empty / JC missing.
+	or the field is empty / anchor row missing.
 	"""
 	meta = frappe.get_meta(target_doc.doctype)
-	jc_fields = [f.fieldname for f in meta.fields if f.fieldtype == "Link" and f.options == "Job Card"]
-	if len(jc_fields) != 1:
-		if len(jc_fields) > 1:
+	candidates = [
+		f.fieldname for f in meta.fields if f.fieldtype == "Link" and f.options == source_doctype
+	]
+	if len(candidates) != 1:
+		if len(candidates) > 1:
 			frappe.log_error(
-				title="Quality Prefill: ambiguous Job Card anchor",
-				message=f"{target_doc.doctype} has {len(jc_fields)} Link→Job Card fields: {jc_fields}",
+				title="Quality Prefill: ambiguous anchor",
+				message=f"{target_doc.doctype} has {len(candidates)} Link→{source_doctype} fields: {candidates}",
 			)
 		return None
-	jc_name = target_doc.get(jc_fields[0])
-	if not jc_name:
+	anchor_name = target_doc.get(candidates[0])
+	if not anchor_name:
 		return None
 	try:
-		return frappe.get_cached_doc("Job Card", jc_name)
+		return frappe.get_cached_doc(source_doctype, anchor_name)
 	except frappe.DoesNotExistError:
 		return None
 
 
 def _load_mapping(target_doctype):
-	"""Load the Quality Field Mapping record for target_doctype, or None."""
-	if not frappe.db.exists("Quality Field Mapping", target_doctype):
+	"""Load the Quality Field Mapping record for target_doctype, or None.
+
+	target_doctype is unique on the mapping, so a single get_value lookup
+	resolves to the record name (now from the naming series, not the
+	target_doctype string).
+	"""
+	name = frappe.db.get_value("Quality Field Mapping", {"target_doctype": target_doctype}, "name")
+	if not name:
 		return None
-	return frappe.get_cached_doc("Quality Field Mapping", target_doctype)
+	return frappe.get_cached_doc("Quality Field Mapping", name)
 
 
 def _group_active_rules_by_target(rules):

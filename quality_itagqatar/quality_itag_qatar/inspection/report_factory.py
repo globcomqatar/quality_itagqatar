@@ -25,11 +25,12 @@ def create_report(inspection_form, qi_name):
 
 def _apply_common_fields(report, qi_name):
     qi = frappe.get_cached_doc("Quality Inspection", qi_name)
-    if qi.reference_type == "Job Card" and qi.reference_name:
-        meta = frappe.get_meta(report.doctype)
-        jc_field = next(
-            (f.fieldname for f in meta.fields if f.fieldtype == "Link" and f.options == "Job Card"),
-            None,
-        )
-        if jc_field:
-            report.set(jc_field, qi.reference_name)
+    if not qi.reference_type or not qi.reference_name:
+        return
+    meta = frappe.get_meta(report.doctype)
+    anchor_field = next(
+        (f.fieldname for f in meta.fields if f.fieldtype == "Link" and f.options == qi.reference_type),
+        None,
+    )
+    if anchor_field:
+        report.set(anchor_field, qi.reference_name)

@@ -6,6 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "source_doctype",
   "target_field",
   "source_path",
   "priority",
@@ -13,21 +14,31 @@
  ],
  "fields": [
   {
+   "fieldname": "source_doctype",
+   "fieldtype": "Link",
+   "options": "DocType",
+   "label": "Source DocType",
+   "default": "Job Card",
+   "description": "Anchor doctype to walk from. The target report must have exactly one Link field pointing at this doctype. Blank → defaults to 'Job Card' at runtime.",
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
    "fieldname": "target_field",
    "fieldtype": "Data",
    "label": "Target Field",
    "reqd": 1,
    "in_list_view": 1,
-   "columns": 3
+   "columns": 2
   },
   {
    "fieldname": "source_path",
    "fieldtype": "Data",
    "label": "Source Path",
-   "description": "Path STARTS on the Job Card (anchor is auto-resolved). Do NOT prefix with 'job_card.'. Examples: 'production_item' (JC), 'work_order' (link on JC), 'work_order.project' (WO), 'work_order.sales_order.customer' (SO).",
+   "description": "Dot-walked path starting on the Source DocType. Examples (JC anchor): 'production_item', 'work_order.sales_order.customer'. SE anchor: 'stock_entry_type', 'work_order'.",
    "reqd": 1,
    "in_list_view": 1,
-   "columns": 5
+   "columns": 4
   },
   {
    "fieldname": "priority",
