@@ -2,12 +2,11 @@ import frappe
 from frappe import _
 
 
-def create_and_submit_qi(jc, inspection_form):
-    """Create and submit a Quality Inspection silently for a Job Card.
+def create_qi_for_jc(jc, inspection_form):
+    """Create a Draft Quality Inspection for a Job Card.
 
-    ERPNext requires a submitted QI linked to a Job Card before the Job Card
-    can be completed. QI.on_submit() calls update_qc_reference() which sets
-    jc.quality_inspection automatically.
+    QI stays in Draft. It is only submitted when the linked inspection report
+    (e.g. Dimensional Inspection Report) is submitted — see submit_linked_qi.
     """
     qi = frappe.get_doc({
         "doctype": "Quality Inspection",
@@ -19,18 +18,16 @@ def create_and_submit_qi(jc, inspection_form):
         "manual_inspection": 1,
         "inspected_by": frappe.session.user,
         "sample_size": 1,
-        "custom_inspection_form": inspection_form,
     })
     qi.insert()
-    qi.submit()
     return qi.name
 
 
-def create_and_submit_qi_for_se(se, row, inspection_form):
-    """Create and submit a Quality Inspection for a specific Stock Entry row.
+def create_qi_for_se(se, row, inspection_form):
+    """Create a Draft Quality Inspection for a specific Stock Entry row.
 
-    Uses child_row_reference so QI binds back to the exact item row
-    (ERPNext disambiguation when item_code repeats).
+    Uses child_row_reference to disambiguate when item_code repeats. QI stays
+    in Draft; submission is deferred to inspection-report submit.
     """
     qi = frappe.get_doc({
         "doctype": "Quality Inspection",
@@ -45,9 +42,20 @@ def create_and_submit_qi_for_se(se, row, inspection_form):
         "status": "Accepted",
         "manual_inspection": 1,
         "inspected_by": frappe.session.user,
-        "custom_inspection_form": inspection_form,
-        "custom_skip_auto_submit": 1,
     })
     qi.insert()
-    qi.submit()
     return qi.name
+
+
+def submit_linked_qi(report_doc, method=None):
+    """Submit the Quality Inspection linked to an inspection report on report submit.
+
+    Wired via doc_events.on_submit for the 6 inspection report doctypes in hooks.py.
+    """
+    qi_name = report_doc.get("quality_inspection")
+    if not qi_name:
+        return
+    qi = frappe.get_doc("Quality Inspection", qi_name)
+    if qi.docstatus != 0:
+        return
+    qi.submit()

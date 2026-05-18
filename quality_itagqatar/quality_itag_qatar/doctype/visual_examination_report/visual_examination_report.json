@@ -8,6 +8,7 @@
  "field_order": [
   "quality_inspection",
   "job_card",
+  "stock_entry",
   "naming_series",
   "work_order_no",
   "part_description",
@@ -130,6 +131,16 @@
    "label": "Job Card",
    "options": "Job Card",
    "read_only": 1,
+   "in_list_view": 0,
+   "print_hide": 1
+  },
+  {
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "label": "Stock Entry",
+   "options": "Stock Entry",
+   "read_only": 1,
+   "no_copy": 1,
    "in_list_view": 0,
    "print_hide": 1
   }

@@ -1,7 +1,6 @@
 const INSPECTION_REPORT_DOCTYPES = [
 	'Assembly Traceability Record',
 	'Certificate of Conformity',
-	'Contract Review Record',
 	'Dimensional Inspection Report',
 	'Final Machining Visual Examination Report',
 	'QC Material Release Note',
@@ -49,6 +48,13 @@ INSPECTION_REPORT_DOCTYPES.forEach(function (doctype) {
 						}, 3);
 						frappe.model.clear_doc('Job Card', qi.reference_name);
 						frappe.set_route('Form', 'Job Card', qi.reference_name);
+					} else if (qi && qi.reference_type === 'Stock Entry' && qi.reference_name) {
+						frappe.show_alert({
+							message: __('Returning to Stock Entry {0}', [qi.reference_name]),
+							indicator: 'green',
+						}, 3);
+						frappe.model.clear_doc('Stock Entry', qi.reference_name);
+						frappe.set_route('Form', 'Stock Entry', qi.reference_name);
 					} else {
 						frappe.show_alert({
 							message: __('Returning to Quality Inspection {0}', [frm.doc.quality_inspection]),

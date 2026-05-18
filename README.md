@@ -1,5 +1,8 @@
 ### Change Log
 
+## __version__ = "15.1.2"
+- Stock Entry inspection flow feedback round: Contract Review Record removed, owned-doctype `stock_entry` field, draft-QI flow (report submit submits QI; SE submission stays manual; validator requires a submitted QI), SE + QI Connections panels added.
+
 ## __version__ = "15.1.1"
 - Inward-inspection code consolidated into this app (Stock Entry submit validator, QI inward serial-no field + JS moved out of globcom_manufacturing).
 

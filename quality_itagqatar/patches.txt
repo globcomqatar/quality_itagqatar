@@ -6,3 +6,4 @@ quality_itagqatar.patches.v1_1.reattribute_inward_inspection_fields
 
 [post_model_sync]
 # Patches added in this section will be executed after doctypes are migrated
+quality_itagqatar.patches.v1_2.cleanup_qi_leftover_and_crr

@@ -9,6 +9,7 @@
   "quality_inspection",
   "naming_series",
   "job_card",
+  "stock_entry",
   "customer",
   "customer_name",
   "column_break_rozn",
@@ -94,6 +95,16 @@
    "label": "Job Card",
    "options": "Job Card",
    "read_only": 1,
+   "in_list_view": 0,
+   "print_hide": 1
+  },
+  {
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "label": "Stock Entry",
+   "options": "Stock Entry",
+   "read_only": 1,
+   "no_copy": 1,
    "in_list_view": 0,
    "print_hide": 1
   }

@@ -1,15 +1,4 @@
-frappe.ui.form.on('Quality Inspection', {
-	custom_inspection_form(frm) {
-		if (frm.doc.docstatus !== 0) return;
-		if (!frm.doc.custom_inspection_form) return;
-		if (!frm.is_dirty()) return;
-		frm.save();
-	},
-});
-
-
 // Inward Serial No dropdown — populates from linked Stock Entry / Job Card.
-// Migrated from globcom_manufacturing on 2026-05-14.
 frappe.ui.form.on('Quality Inspection', {
 	onload(frm) {
 		populate_serial_numbers(frm);

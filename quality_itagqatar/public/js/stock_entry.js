@@ -1,9 +1,20 @@
+const INSPECTION_FORMS_PROMISE = frappe.call({
+	method: 'quality_itagqatar.quality_itag_qatar.api.shared.get_inspection_forms',
+	no_spinner: true,
+}).then((r) => r.message || []);
+
+
 frappe.ui.form.on('Stock Entry', {
+	onload(frm) {
+		INSPECTION_FORMS_PROMISE.then((forms) => apply_inspection_form_options(frm, forms));
+	},
+
 	refresh(frm) {
-		populate_inspection_form_options(frm);
+		frm.toggle_display('custom_start_inspection', frm.doc.docstatus === 0);
 	},
 
 	custom_start_inspection(frm) {
+		if (frm.doc.docstatus !== 0) return;
 		if (!frm.doc.custom_inspection_form) {
 			frappe.msgprint(__('Please select an Inspection Form first.'));
 			return;
@@ -34,24 +45,14 @@ frappe.ui.form.on('Stock Entry', {
 });
 
 
-function populate_inspection_form_options(frm) {
-	if (frm._inspection_forms_loaded) return;
-	frm._inspection_forms_loaded = true;
-	frappe.call({
-		method: 'quality_itagqatar.quality_itag_qatar.api.shared.get_inspection_forms',
-		callback(r) {
-			if (!r.message || !r.message.length) {
-				frm._inspection_forms_loaded = false;
-				return;
-			}
-			const options = ['', ...r.message].join('\n');
-			frm.set_df_property('custom_inspection_form', 'options', options);
-			if (frm.fields_dict.custom_inspection_form) {
-				frm.fields_dict.custom_inspection_form.df.options = options;
-			}
-			frm.refresh_field('custom_inspection_form');
-		},
-	});
+function apply_inspection_form_options(frm, forms) {
+	if (!forms.length) return;
+	const options = ['', ...forms].join('\n');
+	frm.set_df_property('custom_inspection_form', 'options', options);
+	if (frm.fields_dict.custom_inspection_form) {
+		frm.fields_dict.custom_inspection_form.df.options = options;
+	}
+	frm.refresh_field('custom_inspection_form');
 }
 
 
